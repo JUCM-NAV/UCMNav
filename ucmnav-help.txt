@@ -1,0 +1,456 @@
+
+@b@C10@lOn-line Help Topics
+
+  * Keyboard Shortcuts
+  * Navigating the Workspace
+  * Path Creation
+  * Component Creation
+  * Selecting a Component or Path Element
+  * Addition of UCM Path Elements
+  * Double-Element Transformations
+  * Group Selections
+  * Group Move and Alignment Operations
+  * Component/Path/Element/Group Deletion
+  * Adding Plug-ins to Stubs
+  * Selection/Creation of Root/Plug-in Maps
+  * Creation and Use of UCM Sets
+  * Saving and Loading UCM Designs
+  * Exporting/Importing UCMs
+  * UCM Reports and Printouts
+  * Generation of EPS/MIF/CGM/SVG Graphics
+  * Scenario Definitions
+  * Scenario Highlight
+  * MSC Generation
+  * NEW: XML Scenario Generation
+  * NEW: DOORS DXL Export
+  
+@b@C10@lKeyboard Shortcuts
+
+@C21@f@b Basic
+
+@f   c           : Component Tool (creation)
+@f   p           : Path Tool (creation/continuation)
+@f   s           : Select Tool
+@f   Del         : Delete Components/Paths/Path Elements
+@f   m           : Select All Map Elements
+@f   Esc         : Deselect All Map Elements   
+@f   u, PageUp   : Install Parent Map
+@f   d, PageDown : Install Submap
+@f   l           : Lower Last Component
+
+@C21@f@b Scroll                      Element Fixing
+
+@f   UP    : Scroll Up           e : Full Editing
+@f   DOWN  : Scroll Down         f : Fix Components
+@f   LEFT  : Scroll Left         a : Fix All Positions
+@f   RIGHT : Scroll Right
+
+@C21@f@b Group Move Operations       Zoom
+
+@f   Shift+UP    : Move Up       + : Zoom In
+@f   Shift+DOWN  : Move Down     - : Zoom Out
+@f   Shift+LEFT  : Move Left     v : Fit Virtual Area
+@f   Shift+RIGHT : Move Right    = : Fit Map
+
+The underlined characters in the menus are reachable 
+through the ALT key (Unix versions). For example:
+
+  ALT-F ALT-S calls the Save action in the File menu.
+  ALT-F ALT-P calls the Print action in the File menu.
+
+@b@C10@lNavigating the Workspace
+
+The UCM Navigator allows UCMs to be constructed anywhere in
+the workspace. The virtual area is larger than what is 
+usually visible on the screen using 100% magnification.
+
+When the workspace cannot be shown in its entirety, scroll bars 
+appear on the right and bottom sides. Scrolling with these bars 
+shows different areas of the workspace. To show more or less of
+the workspace at once, click on the Scale button and choose a 
+magnification level. Several useful magnification levels are 
+provided:
+
+  * Fit Map: automatically calculates a zoom level to fit all of 
+     the current UCM on screen.
+
+  * Fit Virtual Area: zooms out to show the entire workspace on 
+     the screen at once. Resizing the UCM Navigator window also 
+     changes the amount of the workspace visible at any given time.
+
+@b@C10@lPath Creation
+
+To create a path, select the Path tool by clicking on the Path
+button with either the left or right mouse button. Right-clicking
+the Path button will always start a new path; left-clicking will
+start a new path if no path is currently selected, or continue
+the currently selected path if one exists.
+
+To begin, left-click once in the workspace to place the start
+point of the path. Further clicks in the work area will extend
+the current path, placing an empty point at the location of each
+click and connecting the new point to the last point. If a new
+point falls within the boundaries of a component, it is 
+automatically bound to that component.
+
+To begin a new path, first de-select the current path by clicking
+the Select button and clicking on a blank area of the workspace,
+or right-click on the Path button, or press the escape key ("Esc").
+Continue as noted above.
+
+@b@C10@lComponent Creation
+
+To create a component, first click the Component button to select
+the Component tool. Then, click and drag the left button in the 
+workspace to anchor one corner of the component. Proceed to
+drag the mouse to the desired location of the opposite corner.
+
+By default new components are created as teams but all 
+component characteristics can be changed by way of the 
+component attributes dialog box. This dialog box is invoked 
+either through a component's own popup menu or by double-
+clicking on a component.
+
+Components can also be copied and pasted through the 
+appropriate functions in the Components menu or in the 
+popup menu.
+
+@b@C10@lSelecting a Component or Path Element
+
+To select a component or a path element (including empty points,
+start points and end points), click on the Select tool and 
+left-click once inside the boundary of the desired component or 
+element.
+
+@b@C10@lAddition of UCM Path Elements
+
+To add UCM elements to paths such as responsibilities, forks, 
+or timers, first use the Select tool (Select button). Select the 
+path point handle (small circle, use the menu Options -- Show 
+Data Points) where it is desired to add the element. Right 
+clicking will then bring up a context sensitive popup menu of 
+applicable "single-element transformations". Each UCM element
+on a path will have its own list of transformations that may be 
+invoked by the user. Element attributes are also accessible 
+through this popup menu.
+
+@b@C10@lDouble-Element Transformations
+
+Several transformations such as the creation of joins require 
+the selection of two UCM elements and are thus termed "double-
+element transformations". Select the first element of 
+interest and then hold down the Shift key while clicking the 
+second element.
+
+Alternatively a selection rectangle can be drawn around the 
+two elements by dragging out a rectangle with the select tool
+chosen.
+
+The popup menu of applicable transformations is then invoked in 
+the same manner as for single-element transformations, i.e. by 
+right clicking.
+
+@b@C10@lGroup Selections
+
+The UCM Navigator has the capability to select multiple elements
+which may be either path elements or software components. 
+Group selections can be used for group moves, alignments, and
+deletions.
+
+Elements (either path elements or components) may be selected 
+by either selecting them individually with the Shift key pressed
+or by dragging out a selection rectangle which will select all 
+path elements and components inside its borders. Selection
+rectangles are created simply by dragging out rectangles with 
+the Select tool chosen.
+
+If the start point of the rectangle is inside a component and it
+is not desired to select and move the component, the selection 
+rectangle can be drawn by holding down the Control key while 
+dragging out the rectangle. Holding the Control key inhibits 
+selection and subsequent moving of an enclosing component.
+
+Alternatively both of these methods can be combined with a 
+selection rectangle used to select a number of elements and the 
+shift select method can be used to add additional elements to 
+this group selection.
+
+There is also a deselection mechanism whereby if the Shift key 
+is pressed and a previously selected path element or component
+is selected again it is deselected and removed from the list of
+selected elements and components. The escape key ("Esc") 
+deselects any selection.
+
+Additionally if it is desired to select all of the path elements
+and components in a map (e.g. for moving all map elements)
+this can be accomplished with the "Select All Map Elements" 
+operation in the Components menu or by using the "m" keyboard 
+shortcut.
+
+@b@C10@lGroup Move and Alignment Operations
+
+Once a multiple selection of components and path elements is
+made, it can be moved as a group through the use of the right
+mouse button for coarse movement and Shift - arrow key 
+combinations for fine control.
+
+Moving a group of one or two elements can be done by pressing 
+the Control key and right-clicking. This prevents a popup 
+menu with double-element transformations to appear.
+
+In addition once a multiple selection is made, alignment and 
+distribution operations invoked by the Align main menu item can 
+be performed. It should be mentioned that the editing mode has
+no effect on either the group move or alignment operations. 
+
+The Fix Components and Fix All Positions modes are intended to 
+allow users to prevent undesired component and path element 
+movement when the user intends simply to select elements and not 
+to move them. As the group move and alignment operations are 
+explicitly invoked by the user there is no need to prevent them 
+based on the editing mode in effect.
+
+@b@C10@lComponent/Path/Element/Group Deletion
+
+To delete components, paths and path elements, select the Delete
+item in their respective popup menus or press the delete key
+("Del"). Paths are deleted by deleting their start point.
+
+Multiple selections can be used for group deletion via the
+delete key ("Del").
+
+Several path elements cannot be deleted:
+
+  * Or-Forks and And-Forks: undesired branches must be removed
+     manually by deleting the first empty point on each such
+     branch which follows the fork element.
+     
+  * Or-Joins and And-Joins: undesired branches must be removed
+     manually by decomposing the first empty point on each such
+     branch which precedes the join element.
+
+  * Stubs with more than one input or output segment: segments
+     must be removed manually by decomposing the first empty 
+     point on each such segment which precedes or follows the
+     stub. Stubs with one input segment and one output segment
+     can be deleted.
+
+  * Timers with timeout paths: the timeout path must be deleted
+     first by selecting the "Delete Timeout Path" item in the
+     timer's popup menu.
+
+  * End points: the whole path or branch needs to be deleted.
+
+  * Single empty/control point between two path elements: at 
+     least one empty point must be present at any time between
+     two path elements. Empty points enable path transformations
+     and the addition of new path elements.
+
+@b@C10@lAdding Plug-ins to Stubs
+
+Plug-ins (submaps) can be added to stubs in different ways by
+right-clicking on a stub:
+
+  * Create New Sub Map: Asks for the submap name, and then 
+     adds a submap of that name under the selected stub. Submaps
+     can be edited in the same manner that maps are.
+
+  * Import Plugin From File: Installs a submap from a UCM file
+     into the current Stub.
+
+  * Install Existing Plugin: Adds a submap found under another 
+     Stub into the selected dynamic stub’s list of available 
+     plugins. Modifications made to that submap are reflected
+     globally in all stubs which contain the submap.
+     
+  * Image of Existing Plugin: Identical to Install Existing 
+     Plugin, but makes a copy of the submap so any modifications
+     to it are local and do not affect other stubs or submaps.
+
+  * Transfer Root Map: Transforms a root map into a plugin for
+     the selected stub.
+    
+Plug-ins can be bound to a stub by selecting how stub input and 
+output segments are connected to start points and end points in 
+the submap(s).
+
+Additionally, a selection policy can be added to a dynamic stub.
+This policy explains the conditions under which one or more
+plug-ins are selected.
+
+@b@C10@lSelection/Creation of Root/Plug-in Maps
+
+The Maps menu contains a Select Map option which enables the
+selection of a specific root/plug-in map to be viewed.
+
+Additional root maps can be created with the Create New Root
+map function in the same menu.
+
+The Decomposition Level window allows the direct navigation in a 
+hierarchy of plug-ins.
+
+@b@C10@lCreation and Use of UCM Sets
+
+UCM sets regroup root maps and plug-in maps. Sets can be used 
+to restrict the navigation, to export UCMs or EPS/MIF/CGM/SVG 
+graphics, or to print UCMs.
+
+A set is created by selecting Create New UCM Set in the Maps
+menu. Root maps and plug-ins can be added to the set, which
+can also have a name, a description, and a primary map.
+
+When navigating a design, the current map can be added to or
+removed from any predefined UCM set (through the Maps menu).
+
+@b@C10@lSaving and Loading UCM Designs
+
+The File menu contains options for loading UCMs from disk. Note
+that loading a UCM into memory will overwrite any existing UCMs. 
+If there are unsaved changes, the UCM Navigator will present a 
+dialog box asking if the current map should be saved.
+
+UCMs may be saved to disk using either the Save or Save As 
+commands in the File menu. The files are saved by default with a 
+.ucm extension and are stored in XML format. Backup files 
+(.ucm.bak) are automatically created.
+
+The Options menu contains an Autosave function which can 
+optionally be set to various intervals. The resulting files 
+have a .aus extension. Such files can be copied and renamed
+manually when the tool crashes, or can be loaded using 
+Revert from Autosave in the File menu.
+
+@b@C10@lExporting/Importing UCMs
+
+The UCM export/import mechanism enables the concurrent
+development of one or many UCM designs.
+
+To export UCMs, select the Export Maps command in the File
+menu. Options allow the export of the current UCM (with or
+without the bound submaps) or of a particular UCM set.
+
+Exported UCMs can be imported in two ways:
+
+ * As plug-ins: choose a stub and select Import Plugin From File
+    in its popup menu.
+
+ * As root maps: select the Import Root Map command from the File
+    menu or from the Maps menu.
+
+When imported, responsibilities and components with conflicting
+names can optionally be duplicated (and renamed) or transformed 
+into references to existing responsibilities/components.
+
+Further, the Utilities menu contains tools which allow duplicated
+responsibilities/components to be transformed, at any time, into
+references to other existing responsibilities/components.
+
+@b@C10@lUCM Reports and Printouts
+
+UCM reports can be printed by accessing the Print command in
+the File menu. UCMs may be printed to an installed printer or to a 
+PostScript (.ps) file. Under Windows, we strongly advise the
+generation of a PostScript file.
+
+When printing, options exist to specify what additional
+elements should be included in the report, including the current
+date and time, descriptions of elements, etc. Other options 
+allow the printing of the current UCM (with or without the 
+bound submaps), of a particular UCM set, or of all UCMs.
+
+The PostScript output is PDF-enabled, i.e. hyperlinks on UCM 
+stubs and plug-in names are automatically created, and an index 
+is automatically generated. The PostScript files can be 
+transformed into a PDF file with external tools such as Adobe
+Acrobat Distiller or ps2pdf.
+
+@b@C10@lGeneration of EPS/MIF/CGM/SVG Graphics
+
+UCM drawings can be exported to four graphical formats:
+  * .eps (Encapsulated Postscript, for publishing)
+  * .mif (Maker Interchange Format, for FrameMaker) 
+  * .cgm (Computer Graphics Metafile, for Office applications)
+  * .svg (Scalable Vector Graphics, for Web documents)
+
+Select the appropriate item in the File Menu.  Options allow 
+the export of the current UCM (with or without the bound 
+submaps), of a particular UCM set, or of all UCMs. The files
+are currently being generated in the UCMNAV_HOME directory.
+
+@b@C10@lScenario Definitions
+
+In order to specify named end-to-end scenarios through a complex
+system, which are needed for MSC/XML generation and for scenario
+highlighting, it is necessary to create scenario definitions
+which reference a global data model for the design.
+
+There are three steps for creating scenario definitions.
+
+1. Define a set of global boolean variables for the design.
+2. Define logical selection conditions at branching points
+   (OR-forks, timers, and dynamic stubs ) which reference 
+   the global variables.
+3. Define a set of scenario definitions which specify:
+	* initial values for relevant variables
+	* a list of path start points
+	* an optional postcondition
+
+Scenario definitions are also regrouped under scenario groups.
+
+@b@C10@lScenario Highlight
+
+Scenario definitions can be used in combination with a UCM path
+traversal mechanism to highlight the segments that are visited.
+Elements and segments visited once are colored in red, whereas 
+those visited many times are in colored in orange.
+
+Scenario highlight can be performed via the scenario window
+(accessible from the Scenario menu). Right-clicking on a start
+point and selecting "List Scenarios" will also generate a list
+of scenarios where this start point belongs.
+
+Once paths are highlighted, the navigation mode is restricted
+to the plug-ins visited by the scenario. Removing the 
+highlighting and getting back to a full navigation mode can
+be done throught the scenario menu.
+
+The traversal can generate warnings and errors along the way.
+For instance, for a specific scenario definitions, there could
+be non-determinism (two branches or plug-ins can be selected),
+or deadlocks (conditions or synchronizations that cannot be 
+fulfilled).
+
+The colored paths can be exported in EPS/MIF/CGM/SVG files.
+
+@b@C10@lMSC Generation
+
+Scenario definitions can be used for generating Message
+Sequence Charts in the Z.120 textual form. ".msc" files are 
+created for scenarios in a way similar to scenario highlight. 
+The MSC files can be visualized using commercial and research 
+tools (e.g. Telelogic Tau 4.4)
+
+@b@C10@lXML Scenario Generation
+
+Scenario definitions can also be used for generating scenarios
+in an intermediate XML format, valid according to the DTD
+scenario1.dtd. Such XML scenario can be postprocessed (e.g.
+with XSLT) and transformed into other representations such
+as MSC, UML sequence/collaboration/activity diagrams, TTCN
+test cases, etc.
+
+@b@C10@lDOORS DXL Export
+
+Several UCM elements can be exported to the DOORS requirements
+management system. UCMNav can generate DXL scripts which can
+run on DOORS and update the DOORS database. These UCM elements
+can be linked to other tyoes for requirements, enabling
+traceability between scenarios and external requirements. 
+A DXL library is required to run the script (available upon
+request to damyot@site.uottawa.ca)
+
+@b@C10@lFor Additional Information...
+
+Please consult the UCM Navigator User's Manual, available at:
+
+@C21@f@b@chttp://www.UseCaseMaps.org/tools/ucmnav/

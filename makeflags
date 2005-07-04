@@ -1,0 +1,35 @@
+# Make flags for linux
+
+CPP = g++
+CC = gcc
+BINDIR = .
+
+# unused flags -DDEBUG -DMSC_DEBUG 
+
+ifndef RPM_OPT_FLAGS
+RPM_OPT_FLAGS=-g
+endif
+
+ifndef UCMNAV_HOME
+UCMNAV_HOME=\"/usr/share/ucmnav\"
+endif
+
+CFLAGS = $(RPM_OPT_FLAGS) -Wall -DLQN -D_POSIX_SOURCE -I/usr/X11R6/include
+CPPFLAGS = $(CFLAGS) -Wno-reorder
+
+ifndef LIBDIR
+LIBDIR=/usr/lib
+endif
+
+ifndef LLIBDIR
+LLIBDIR=/usr/local/lib
+endif
+
+ifndef XLIBDIR
+XLIBDIR=/usr/X11R6/lib
+endif
+
+LIBS   = -L$(LIBDIR) -L$(XLIBDIR) -L$(LLIBDIR) -lforms -lexpat -lX11 -lm
+
+CLEAN_OPERATIONS = rm -f *.o
+TAR_NAME = ucmnav-linux.tar

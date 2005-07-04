@@ -1,0 +1,12 @@
+eval: eval_test.o evaluate.tab.o lex.yy.o
+	cc -o eval_test eval_test.o evaluate.tab.o lex.yy.o -lfl
+
+lex.yy.o: lex.yy.c evaluate.tab.h
+
+
+evaluate.tab.c: evaluate.y
+	bison -d evaluate.y
+
+lex.yy.c: evaluate.l
+	flex evaluate.l
+

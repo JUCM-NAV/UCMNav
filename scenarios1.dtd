@@ -1,0 +1,73 @@
+<!--
+**********************************************************************
+* XML DTD for Use Case Map Scenarios
+**********************************************************************
+# Authors: Xiangyang He (hexiangyang@hotmail.com)
+#          Daniel Amyot (damyot@site.uottawa.ca)
+# Version: 1.0
+# Organization: SITE, University of Ottawa
+# Date: 2002/08/23
+# Modified by Shuhua Cui, 2003/04/20
+# Root Element: scenarios
+-->
+
+<!ELEMENT scenarios (group*)>
+
+<!ATTLIST scenarios
+		date		CDATA	#REQUIRED
+		ucm-file	CDATA	#REQUIRED
+		design-name	CDATA	#IMPLIED
+	ucm-design-version 	CDATA	#REQUIRED >
+
+<!ELEMENT group (scenario)*>
+
+<!ATTLIST group 
+                     group-id 		NMTOKEN		#IMPLIED
+		     name 		CDATA	        #REQUIRED
+	             description 	CDATA		#IMPLIED >
+
+<!ELEMENT scenario (seq | par)>
+
+<!ATTLIST scenario 
+                     scenario-definition-id NMTOKEN	#IMPLIED
+                     name 		CDATA	        #REQUIRED
+	             description 	CDATA		#IMPLIED >
+
+<!ELEMENT seq (do | condition | par)*>
+
+<!ELEMENT par  (do | condition | seq)*>
+<!ATTLIST par
+              component-name  CDATA                              #IMPLIED
+	      component-role  CDATA                              #IMPLIED
+	      component-id    NMTOKEN                            #IMPLIED >
+
+<!ELEMENT do EMPTY>
+
+<!-- WP_Enter: When the scenario gets to a waiting place
+     WP_Leave: After the waiting place is triggered/visited
+     Connect_Start: Start point of a plug-in (connection only)
+     Connect_End: End point of a plug-in (connection only)
+     Trigger_End: End point connected to a start point or waiting place
+-->
+     
+<!ATTLIST  do
+                hyperedge-id 	NMTOKEN	                           #REQUIRED
+		name 		CDATA	                           #IMPLIED
+                type            (Resp | Start | End_Point 
+				| WP_Enter | WP_Leave
+				| Connect_Start | Connect_End
+				| Trigger_End | Timer_Set 
+				| Timer_Reset | Timeout)           #REQUIRED
+		description 	CDATA		                   #IMPLIED
+		component-name	CDATA				   #IMPLIED
+		component-role  CDATA                              #IMPLIED
+		component-id	NMTOKEN	                           #IMPLIED >
+
+<!ELEMENT condition EMPTY>
+
+<!-- expression is the boolean expression used in the selected branch -->
+<!-- label is the name associated to the next empty point in that branch -->
+<!ATTLIST condition 
+		hyperedge-id	NMTOKEN #REQUIRED
+		label		CDATA	#REQUIRED
+		expression	CDATA	#IMPLIED >

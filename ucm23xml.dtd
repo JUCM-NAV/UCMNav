@@ -1,0 +1,1378 @@
+<!--
+**********************************************************************
+* XML DTD for Use Case Maps
+**********************************************************************
+# Authors: Daniel Amyot (damyot@csi.uottawa.ca)
+#          Andrew Miga ( miga@sce.carleton.ca )
+# Version: 0.23
+# Organization: Agent Project, Systems and Computer Engineering, 
+#               Carleton University
+# Date: 2001/11/08
+# Root Element: ucm-design
+-->
+
+<!--
+This DTD describes the XML-based interchange format between tools for
+Use Case Maps. This DTD will allow us to use a validating XML parser.
+More information on the project and the existing linear form at 
+http://www.sce.carleton.ca/rads/agents/
+
+***Version 0.23, 2001/11/08:
+Added stream and population-size to start.
+Added probability to plugin-binding.
+Added postcondition to scenario-definition.
+Renamed several variables.
+
+***Version 0.22, 2001/07/29:
+Added variable operations to responsibilities with variable-operation.
+Advanced path-variable-list to avoid forward references.
+Added multiple starting points to scenarios with scenario-start.
+Added logical-condition to start and waiting-place.
+Added timeout-variable to waiting-place.
+
+*** Version 0.21, 2000/10/26:
+Added path control variables with path-variable-list.
+Added boolean variables with boolean-variable.
+Added scenario definition objects with scenario-definition, scenario-list,
+scenario-group.
+Added branch-condition to path-branching-characteristic and plugin-binding.
+Added path-variable-list and scenario-list to ucm-design.
+
+*** Version 0.20, 2000/06/26:
+Added peformance annotations.
+Added op-time to device.
+Changed processor attribute in regular (component) from string to reference.
+Added service-request-spec to stub.
+Added probability to path-branching-characteristic.
+
+*** Version 0.19, 2000/04/27:
+Added loop hyperedge.
+
+*** Version 0.18, 2000/03/28:
+Added role attribute to component references.
+Added wait-type attribute to waiting places.
+
+*** Version 0.17, 1999/12/13:
+Separated component definitions from component references.
+
+*** Version 0.16, 1999/10/13:
+Added ucm-sets to ucm-design
+
+*** Version 0.15, 1999/09/23:
+Added selection-policy to stubs
+Moved enforce-bindings from stubs to hypergraph to avoid forward references
+
+*** Version 0.14, 1999/07/09:
+Added pre/postconditions to responsibilities
+
+*** Version 0.13, 1999/05/26:
+Moved list of responsibilities in each map into the ucm-design element
+to act as a global responsibility list for the entire design
+Moved direction from responsibility to responsibility-ref
+Moved arrow position from dynamic-resp to responsibility-ref
+Added direction-arrow option to empty-segment characteristics
+Added label-alignment specification to start and end-point
+
+*** Version 0.12, 1999/01/25:
+Added list of service-request's to responsibilities
+Added path-branching-spec to specify branch selection
+characteristics of or forks.
+
+*** Version 0.11, 1999/01/13:
+Moved path-label-id from hyperedge to empty-segment
+Moved notation, width, and height from structure-spec to ucm-design, changed
+width and height to reflect new virtual drawing area
+
+*** Version 0.10, 1998/09/29 :  
+Reorganized to avoid forward references to simplify file loading
+and enable use of validating parser.
+Separated performance-annotations into device and data directories
+before maps and response time requirements after maps.
+Reversed order of path labels and hyperedges.
+Reversed order of components and hyperedges.
+Separated definition of plugin bindings and plugin pools from their
+originating stubs through plugin-binding and plugin-pool elements.
+Separated definition of hyperedges from the definition of hyperedge
+connections through hyperedge-connection element.
+Removed redundant inter-object relationship information from 
+hyperedges ( source hyperedges ) and components ( sub-structures ).
+Added reference attribute to timestamp points.
+Added show_label attribute to empty segment and simplified characteristics.
+Replaced unnecessary elements referring to references with proper attributes.
+
+*** Version 0.09, 1998/08/17 :  
+Added a few missing parameters to regular, and modified goal annotations. 
+Modified several rules in order to be compatible with our validating parser
+  ( e.g., (a*) becomes (a)* )
+Added data-store-spec to responsibilities.
+Sorted the elements.
+
+*** Version 0.06, 1998/06/29 : 
+Finished hyperedges, including stubs, empty-segments, timestamp points, 
+  goal tags aborts, connects. 
+Added goal annotations.
+
+*** Version 0.05, 1998/06/24 : 
+Removed entity DTDVERSION. Restructured almost everything in accordance 
+  to the hypergraph model in the tool.
+Described performance annotations. 
+Adapted the structure specification. 
+Replaced path-atom-spec by hypergraph.
+Replaced atoms by hyperedges. 
+Replaced path-list by path-label-list.
+Components are now either pool or regular components. 
+Merged common attributes.
+
+*** Version 0.04, 1998/06/15 : 
+Removed many IDs and IDREFs. 
+Completed section 7, but the raise/handle mechanism needs some more thinking. 
+Done with sections 3 and 6. 
+Merged section 4 to section 5.
+
+*** Version 0.03, 1998/06/10 : 
+Checked IDs and IDREFs. 
+Substituted NMTOKENS for lists. 
+We need a naming scheme for unique identifiers, something like 
+  (design.((model.)+)name). Then, IDs and IDREFs will be implementable 
+  in this DTD.
+
+*** Version 0.02, 1998/06/08 : 
+Covered sections 1, 2 and 7 of the linear form.
+
+*** Version 0.01, 1998/06/07 : 
+This is a first attempt at translating the existing linear form for 
+  Use Case Maps into XML
+-->
+
+<!-- ************** ROOT ELEMENT ************** -->
+
+<!--
+******************************************************************************
+ELEMENT: ucm-design 
+COMMENT: A UCM design is composed of a collection (a forest) of 
+ (top-level) root-maps and, possibly, of a collection of 
+ plugin-maps. It also contains global performance annotations and 
+ global agent annotations referenced by the elements of the design.
+ ROOT ELEMENT!
+ATTRIBUTE dtd-version: Version of the DTD used. 
+ATTRIBUTE notation: Other notations may eventually get supported 
+ (e.g., ROOM, SDL, ACME, UML...)
+ATTRIBUTE width and height: Width and height of the 
+ model, in abstract ubits (pixels?). Location and size information on 
+ components and hyperedges are relative to that measure. 
+*****************************************************************************
+-->
+
+<!ELEMENT ucm-design (component-specification?, path-variable-list?,
+		      responsibility-specification?, device-directory?,
+                      data-store-directory?, root-maps, plugin-maps?,
+                      plugin-bindings?, response-time-requirements?,
+                      agent-annotations?, ucm-sets?, scenario-list?)>
+<!ATTLIST ucm-design  
+                    design-id   ID      #REQUIRED
+                    dtd-version NMTOKEN #REQUIRED
+                    design-name CDATA   #IMPLIED
+		    notation    NMTOKEN "Buhr-UCM"
+                    width       NMTOKEN "1320"
+                    height      NMTOKEN "1100"
+                    description CDATA   #IMPLIED >
+
+
+<!-- ************** OTHER ELEMENTS ************** -->
+
+<!--
+**********************************************************************
+ELEMENT: abort
+COMMENT: Used for both timer timeout paths and path exceptions
+ For timeout paths: Specifies the connection between a timer and the
+ start of its timeout path.
+ For exceptions: Connection between two empty segments from two paths. 
+ The aborting path (the source hyperedge-ref) destroys all 
+ instances of the aborted path (the target hyperedge-ref). 
+**********************************************************************
+-->
+
+<!ELEMENT abort EMPTY>
+
+<!--
+**********************************************************************
+ELEMENT: access-mode
+COMMENT: An access mode contains a unique ID and an item (a name). 
+**********************************************************************
+-->
+
+<!ELEMENT access-mode EMPTY>
+<!ATTLIST access-mode  
+                access-mode-id      ID      #REQUIRED
+                access-mode-item    CDATA   #IMPLIED
+                description         CDATA   #IMPLIED >
+
+<!--
+**********************************************************************
+ELEMENT: agent-annotations
+COMMENT: Agent annotations currently contain fairly explicit goal 
+ descriptions. This is to be enhanced in the future. 
+**********************************************************************
+-->
+
+<!ELEMENT agent-annotations (goal-list)>
+
+<!--
+**********************************************************************
+ELEMENT: boolean-variable
+COMMENT: definition of a boolean path control variable
+**********************************************************************
+-->
+
+<!ELEMENT boolean-variable EMPTY >
+<!ATTLIST boolean-variable
+                 name        NMTOKEN  #REQUIRED
+		 boolvar-id  ID       #REQUIRED
+		 ref-count   NMTOKEN  #REQUIRED>
+
+<!--
+**********************************************************************
+ELEMENT: component
+COMMENT: Components, in Buhr's notation, may be pools or regular 
+ components (teams, processes, ISRs, objects, agents, or others 
+ (if another notation is used)). Some regular components may 
+ contain a sub-structure.
+ATTRIBUTE formal: 'no' means actual.
+ATTRIBUTE fx and fy: location of the component on the map ([0..1]).
+ATTRIBUTE width and height: width and height of 
+ the component on the map ([0..1]).
+ATTRIBUTE colour: colour of the component on the map, in RGB (24 bits)
+**********************************************************************
+-->
+
+<!ELEMENT component ((regular|pool))>
+<!ATTLIST component  
+                component-id     ID          #REQUIRED
+                component-name   CDATA       #REQUIRED
+                description      CDATA       #IMPLIED
+                formal           (yes | no)  "no"
+                colour           NMTOKEN     #IMPLIED >
+		
+<!--
+**********************************************************************
+ELEMENT: component-ref
+COMMENT: A reference to a software component which occurs in a
+particular map.
+**********************************************************************
+-->
+
+<!ELEMENT component-ref (responsibility-list?, other-hyperedge-list?)?>
+<!ATTLIST component-ref
+                component-ref-id      ID          #REQUIRED
+                referenced-component  IDREF       #IMPLIED
+                component-parent      IDREF       #IMPLIED
+		role                  CDATA       #IMPLIED
+                fx                    NMTOKEN     #REQUIRED
+                fy                    NMTOKEN     #REQUIRED
+                width                 NMTOKEN     #REQUIRED
+                height                NMTOKEN     #REQUIRED
+                anchored              (yes | no)  "no"
+                fixed                 (yes | no)  "no"  >
+
+<!--
+**********************************************************************
+ELEMENT: component-specification
+COMMENT: Description of the responsibilities 
+**********************************************************************
+-->
+
+<!ELEMENT component-specification (component)*>
+
+<!--
+**********************************************************************
+ELEMENT: condition
+COMMENT: A condition might be of a type more complex than a 
+ simple name (e.g.: (X > Y AND Z^2 != X). 
+**********************************************************************
+-->
+
+<!ELEMENT condition EMPTY>
+<!ATTLIST condition
+                name        NMTOKEN   #REQUIRED  
+                description CDATA     #IMPLIED >
+
+<!--
+**********************************************************************
+ELEMENT: connect
+COMMENT: Connection between two paths. The triggering path (the 
+ source hyperedge-ref) uses an end-point (for synchronous 
+ interaction) or an empty-segment (for asynchronous or in-passing 
+ interaction) on the start or a waiting-place of the triggered 
+ path (the target hyperedge-ref). 
+**********************************************************************
+-->
+
+<!ELEMENT connect EMPTY>
+
+<!--
+**********************************************************************
+ELEMENT: path-variable-list
+COMMENT: List of all globally scoped path control variables.
+**********************************************************************
+-->
+
+<!ELEMENT path-variable-list (boolean-variable)*>
+
+<!--
+**********************************************************************
+ELEMENT: data-store
+COMMENT: A data store contains a unique ID and an item (a name). 
+**********************************************************************
+-->
+
+<!ELEMENT data-store EMPTY>
+<!ATTLIST data-store  
+                data-store-id   ID      #REQUIRED
+                data-store-item CDATA   #IMPLIED
+                description     CDATA   #IMPLIED >
+
+<!--
+**********************************************************************
+ELEMENT: data-store-access
+COMMENT: How a data-store is accessed.
+**********************************************************************
+-->
+
+<!ELEMENT data-store-access EMPTY>
+<!ATTLIST data-store-access  
+                data-store-id           IDREF   #REQUIRED
+                access-mode-id          IDREF   #REQUIRED >
+
+<!--
+**********************************************************************
+ELEMENT: data-store-directory
+COMMENT: The data-store-directory contains a list of data stores 
+ and a list of access modes used globally in the design. 
+**********************************************************************
+-->
+
+<!ELEMENT data-store-directory (data-store*, access-mode*)?>
+
+<!--
+**********************************************************************
+ELEMENT: data-store-spec
+COMMENT: List pairs (data-store, access-mode).
+**********************************************************************
+-->
+
+<!ELEMENT data-store-spec (data-store-access)*>
+
+<!--
+**********************************************************************
+ELEMENT: device
+COMMENT: A device can be a processor, a disk, a DSP or anything 
+ else (other). In contains a unique identifier and a name. 
+**********************************************************************
+-->
+
+<!ELEMENT device EMPTY>
+<!ATTLIST device  
+                device-id   ID                          #REQUIRED
+                device-type (processor|disk|dsp|other)  #REQUIRED
+                device-name CDATA                       #IMPLIED
+                description CDATA                       #IMPLIED
+		op-time     NMTOKEN                     #IMPLIED >
+
+<!--
+**********************************************************************
+ELEMENT: device-directory
+COMMENT: The device-directory contains a list of devices. 
+**********************************************************************
+-->
+
+<!ELEMENT device-directory (device)*>
+
+<!--
+**********************************************************************
+ELEMENT: dynamic-resp
+COMMENT: A dynamic responsibility performs an action on 
+ data/components/plugins, in or out of a path. It may have an 
+ explicit source pool as well.
+ATTRIBUTE sourcepool: this is the 
+ pool-name of an existing pool in the model.
+ATTRIBUTE 
+ arrow-length: visual length of the arrow for the display 
+ ([0..1]).
+ATTRIBUTE arrow-position: visual position of the 
+ arrow for the display. 
+**********************************************************************
+-->
+
+<!ELEMENT dynamic-resp EMPTY>
+<!ATTLIST dynamic-resp  
+                type         (move | move-stay | create
+                               | copy | destroy)         #REQUIRED
+                direction    (in | out)                  #REQUIRED
+                sourcepool   CDATA                       #IMPLIED
+                arrow-length NMTOKEN                     #IMPLIED >
+
+<!--
+**********************************************************************
+ELEMENT: empty-segment
+COMMENT: An empty segment is used to add attributes to a path 
+ such as the indication of a failure point or that the 
+ responsibility preceeding and following it are shared. It has 
+ one source hyperedge and one target hyperedge (except when 
+ linked through a connect or an abort). It may also contain 
+ preconditions for the next hyperedge or postconditions of the 
+ previous hyperedge. 
+**********************************************************************
+-->
+
+<!ELEMENT empty-segment (precondition-list?, postcondition-list?)?>
+<!ATTLIST empty-segment
+                path-label-id   IDREF                      #REQUIRED
+                characteristics (failure-point | shared
+                                 | direction-arrow )       #IMPLIED 
+                show-label      (yes|no)                   "no" >
+
+<!--
+**********************************************************************
+ELEMENT: end-point
+COMMENT: An end-point (or end bar, or result) has usually one 
+ source hyperedge (and possibly a target hyperedge to a connect 
+ for linking to starts or waiting places). The 
+ resulting-event-list gives the set of events that occur once the 
+ sequence of actions in a path are completed. The 
+ postcondition-list must be satisfied once the sequence is 
+ completed. 
+**********************************************************************
+-->
+
+<!ELEMENT end-point (resulting-event-list?, postcondition-list?)?>
+<!ATTLIST end-point
+              label-alignment ( centered | flush )    #IMPLIED >
+
+<!--
+**********************************************************************
+ELEMENT: enforce-bindings
+COMMENT: Bindings can be enforced at stub definition time in 
+ order to preserve path continuity in the stub. Plugins whose 
+ bindings do not satisfy this constraint will not be selected. 
+**********************************************************************
+-->
+
+<!ELEMENT enforce-bindings (path-binding)*>
+<!ATTLIST enforce-bindings 
+                     stub-id   IDREF   #REQUIRED >
+
+<!--
+**********************************************************************
+ELEMENT: event
+COMMENT: An event is a name. 
+**********************************************************************
+-->
+
+<!ELEMENT event EMPTY>
+<!ATTLIST event  
+                name        NMTOKEN     #REQUIRED
+                description CDATA       #IMPLIED >
+
+<!--
+**********************************************************************
+ELEMENT: fork
+COMMENT: A fork has several target hyperedges and only one 
+ source hyperedge. 
+**********************************************************************
+-->
+
+<!ELEMENT fork EMPTY>
+<!ATTLIST fork  
+                orientation NMTOKEN #IMPLIED >
+
+<!--
+**********************************************************************
+ELEMENT: formal-to-value
+COMMENT: Replaces formal-param by value in the selected plugin. 
+**********************************************************************
+-->
+
+<!ELEMENT formal-to-value EMPTY>
+<!ATTLIST formal-to-value  
+                formal-param    NMTOKEN #REQUIRED
+                value           NMTOKEN #REQUIRED >
+
+<!--
+**********************************************************************
+ELEMENT: goal
+COMMENT: A goal contains two references to goal tags (starting 
+ and ending goal tags), pre- and postconditions, a name, and a 
+ description. 
+**********************************************************************
+-->
+
+<!ELEMENT goal (precondition-list?, postcondition-list?)>
+<!ATTLIST goal  
+                start-point IDREF   #REQUIRED
+                end-point   IDREF   #REQUIRED
+                goal-id     ID      #IMPLIED
+                goal-name   CDATA   #IMPLIED
+                description CDATA   #IMPLIED >
+
+<!--
+**********************************************************************
+ELEMENT: goal-list
+COMMENT: List of goals for agent annotations. 
+**********************************************************************
+-->
+
+<!ELEMENT goal-list (goal)*>
+
+<!--
+**********************************************************************
+ELEMENT: goal-tag
+COMMENT: A goal tag is a name on a path used to define goals. 
+**********************************************************************
+-->
+
+<!ELEMENT goal-tag EMPTY>
+<!ATTLIST goal-tag  
+                orientation NMTOKEN #IMPLIED >
+
+<!--
+**********************************************************************
+ELEMENT: handle
+COMMENT: Indicates that this path handles the exception of another path.
+ATTRIBUTE exception-id: an identifier referenced 
+ by "raise" responsibilities. 
+**********************************************************************
+-->
+
+<!ELEMENT handle EMPTY>
+<!ATTLIST handle  
+                exception-id    ID  #REQUIRED >
+
+<!--
+**********************************************************************
+ELEMENT: hyperedge
+COMMENT: An hyperedge specifies a hypergraph element. It may 
+ contain several previous and next hyperedges, depending on the 
+ type of the hyperedge.
+ATTRIBUTE path-label-id: the paths to which this hyperedge belongs. 
+ATTRIBUTE fx and fy: location of the hyperedge on the map ([0..1]).
+**********************************************************************
+-->
+
+<!ELEMENT hyperedge ( (start | waiting-place | end-point | 
+          responsibility-ref | join | fork | synchronization 
+          | stub | empty-segment | timestamp-point | 
+          goal-tag | connect | abort | loop) ) >
+<!ATTLIST hyperedge  
+                hyperedge-id    ID      #REQUIRED
+                hyperedge-name  CDATA   #IMPLIED
+                fx              NMTOKEN #IMPLIED
+                fy              NMTOKEN #IMPLIED
+                description     CDATA   #IMPLIED >
+
+<!--
+**********************************************************************
+ELEMENT: hyperedge-ref
+COMMENT: 
+ATTRIBUTE hyperedge-id: EMPTY, with an IDREF for attribute, is used 
+ here instead of #PCDATA for the content. This is to enforce the 
+ validity constraint that we reference a unique hyperedge in the 
+ current model. IDREFS is not used as some XML parsers may not support 
+ it, and because other attributes might be added later. 
+**********************************************************************
+-->
+
+<!ELEMENT hyperedge-ref EMPTY>
+<!ATTLIST hyperedge-ref  
+                hyperedge-id    IDREF   #REQUIRED >
+
+<!--
+**********************************************************************
+ELEMENT: hyperedge-connection
+COMMENT: Next connected hyperedges. 
+**********************************************************************
+-->
+
+<!ELEMENT hyperedge-connection (hyperedge-ref)*>
+<!ATTLIST hyperedge-connection
+                source-hyperedge   IDREF  #REQUIRED >
+<!--
+**********************************************************************
+ELEMENT: hypergraph
+COMMENT: The hypergraph specifies all the elements (hyperedges) 
+ that make up the paths and their interconnections. 
+**********************************************************************
+-->
+
+<!ELEMENT hypergraph (hyperedge*, hyperedge-connection*,
+                      path-branching-spec*, enforce-bindings*)>
+
+<!--
+**********************************************************************
+ELEMENT: in-connection
+COMMENT: An in-connection joins a stub entry identifier with a 
+ start hyperedge from the plugin. 
+**********************************************************************
+-->
+
+<!ELEMENT in-connection EMPTY>
+<!ATTLIST in-connection  
+                stub-entry-id   IDREF   #REQUIRED
+                hyperedge-id    IDREF   #REQUIRED >
+
+<!--
+**********************************************************************
+ELEMENT: in-connection-list
+COMMENT: An in-connection joins a stub entry identifier with a 
+ start hyperedge from the plugin 
+**********************************************************************
+-->
+
+<!ELEMENT in-connection-list (in-connection)*>
+
+<!--
+**********************************************************************
+ELEMENT: instance-values
+COMMENT: Formal parameters within the plug-in model (such as 
+ formal components) can be instantiated, with a value, at 
+ run-time when the plugin is selected. 
+**********************************************************************
+-->
+
+<!ELEMENT instance-values (formal-to-value)*>
+
+<!--
+**********************************************************************
+ELEMENT: join
+COMMENT: A join has several source hyperedges and only one 
+ target hyperedge. 
+**********************************************************************
+-->
+
+<!ELEMENT join EMPTY>
+<!ATTLIST join  
+                orientation NMTOKEN #IMPLIED >
+
+<!--
+**********************************************************************
+ELEMENT: loop
+COMMENT: A loop has two source and two target hyperedges. It
+ represents an explicit loop in a UCM path with a follow through path
+ and a loop path.
+**********************************************************************
+-->
+
+<!ELEMENT loop EMPTY>
+<!ATTLIST loop  
+                orientation    NMTOKEN #REQUIRED
+		exit-condition CDATA   #IMPLIED >
+
+<!--
+**********************************************************************
+ELEMENT: model
+COMMENT: A model is a map that contains specifications for its 
+ structure, paths, and responsibilities. 
+**********************************************************************
+-->
+
+<!ELEMENT model (path-spec?, structure-spec?)>
+<!ATTLIST model  
+                model-id    ID      #REQUIRED
+                model-name  CDATA   #REQUIRED
+                title       CDATA   "No title"
+                description CDATA   #IMPLIED >
+
+<!--
+**********************************************************************
+ELEMENT: other-hyperedge-list
+COMMENT: These references point to the hyperedges (other than 
+ responsibility-references) enumerated in the hypergraph. 
+**********************************************************************
+-->
+
+<!ELEMENT other-hyperedge-list (hyperedge-ref)*>
+
+<!--
+**********************************************************************
+ELEMENT: out-connection
+COMMENT: An out-connection joins a stub exit identifier with a 
+ end-point hyperedge from the plugin. 
+**********************************************************************
+-->
+
+<!ELEMENT out-connection EMPTY>
+<!ATTLIST out-connection  
+                stub-exit-id    IDREF   #REQUIRED
+                hyperedge-id    IDREF   #REQUIRED >
+
+<!--
+**********************************************************************
+ELEMENT: out-connection-list
+COMMENT: An out-connection joins a stub exit identifier with a 
+ end-point hyperedge from the plugin. 
+**********************************************************************
+-->
+
+<!ELEMENT out-connection-list (out-connection)*>
+
+<!--
+**********************************************************************
+ELEMENT: path-binding
+COMMENT: Bindings can be enforced at stub definition time in 
+ order to preserve path continuity in the stub. Continuity is 
+ expressed as a relation between the stub entry and exit points. 
+ Plugins whose bindings do not satisfy this constraint will not 
+ be selected. 
+**********************************************************************
+-->
+
+<!ELEMENT path-binding EMPTY>
+<!ATTLIST path-binding  
+                stub-entry-id   IDREF   #REQUIRED
+                stub-exit-id    IDREF   #REQUIRED >
+
+<!--
+**********************************************************************
+ELEMENT: path-branching-characteristic
+COMMENT: Specifies the characteristic by which an output branch of
+a fork is chosen at run time.
+**********************************************************************
+-->
+<!ELEMENT path-branching-characteristic EMPTY>
+<!ATTLIST path-branching-characteristic
+                characteristic   CDATA   #IMPLIED
+		branch-condition CDATA   #IMPLIED
+		probability      NMTOKEN #IMPLIED
+                empty-segment    IDREF   #REQUIRED > 
+
+<!--
+**********************************************************************
+ELEMENT: path-branching-spec
+COMMENT: Specifies the characteristics by which an output branch of
+a given fork is chosen at run time. They may be probabilities, logical
+conditions, or preconditions.
+**********************************************************************
+-->
+
+<!ELEMENT path-branching-spec (path-branching-characteristic)*>
+<!ATTLIST path-branching-spec
+                fork-id    IDREF   #REQUIRED >
+
+<!--
+**********************************************************************
+ELEMENT: path-label-list
+COMMENT: The list of path labels associated to the paths. Note 
+ that "A", "B", and "A+B" are three different path labels. 
+**********************************************************************
+-->
+
+<!ELEMENT path-label-list (path-label)*>
+
+<!--
+**********************************************************************
+ELEMENT: path-label
+COMMENT: The set of labels (e.g., A+B+C) associated to a path 
+ and referenced by responsibility references. 
+**********************************************************************
+-->
+
+<!ELEMENT path-label EMPTY>
+<!ATTLIST path-label  
+                path-label-id   ID      #REQUIRED
+                label           CDATA   #IMPLIED >
+
+<!--
+**********************************************************************
+ELEMENT: path-spec
+COMMENT: The path specification of a model details the 
+ hypergraph that represents the paths (causal scenarios), and the 
+ labels that identify them. 
+**********************************************************************
+-->
+
+<!ELEMENT path-spec (path-label-list?, hypergraph?)?>
+
+<!--
+**********************************************************************
+ELEMENT: plugin-binding
+COMMENT: A plugin refers to a UCM model that can be substituted 
+ to the parent stub. The binding between the plugin and its 
+ parent stub is defined by the in-connections, the 
+ out-connections, and the instance-values. 
+**********************************************************************
+-->
+
+<!ELEMENT plugin-binding (in-connection-list?, out-connection-list?, 
+		          instance-values?)?>
+<!ATTLIST plugin-binding  
+                parent-map-id    IDREF   #REQUIRED
+                submap-id        IDREF   #REQUIRED
+                stub-id          IDREF   #REQUIRED
+		branch-condition CDATA   #IMPLIED
+		probability      NMTOKEN #IMPLIED >
+
+<!--
+**********************************************************************
+ELEMENT: plugin-bindings
+COMMENT: Specification of stub to submap bindings 
+**********************************************************************
+-->
+
+<!ELEMENT plugin-bindings (plugin-binding*, plugin-pool*)? >
+
+<!--
+**********************************************************************
+ELEMENT: plugin-maps
+COMMENT: Plugin-maps are models. Many plugin-maps are possible, 
+ and they can be shared between different root-maps and 
+ plugin-maps 
+**********************************************************************
+-->
+
+<!ELEMENT plugin-maps (model)*>
+
+<!--
+**********************************************************************
+ELEMENT: plugin-pool
+COMMENT: Plugin reference that is part of a pool.
+ATTRIBUTE 
+ model-id: a reference to a plugin (model) identifier.
+ pool-id: a reference to the pool itself
+**********************************************************************
+-->
+
+<!ELEMENT plugin-pool EMPTY>
+<!ATTLIST plugin-pool
+                pool-id     IDREF   #REQUIRED  
+                model-id    IDREF   #REQUIRED >
+
+<!--
+**********************************************************************
+ELEMENT: pool
+COMMENT: Pools mainly serve the dynamic self-configuring aspect 
+ of UCMs. A pool can be attributed an arbitrary component type 
+ (process, team, etc.) or a list of plugins for dynamic stubs. It 
+ can be actual or formal, and anchored or not. A pool can also 
+ hold a list of responsibility references, as well as several 
+ other hyperedges (OR-join, AND, fork, empty, etc.). Pools cannot 
+ perform responsibilities other than move components in or out a 
+ path, and they cannot be decomposed into a sub-structure. 
+ type: usually team, process, object, ISR, agent, or plugin-pool.
+ If the pool is a plugin-pool its plugin-maps are specified in the
+ plugin-bindings element. Could be an ad hoc name as well, if another
+ structure notation is targeted. 
+**********************************************************************
+-->
+
+<!ELEMENT pool EMPTY>
+<!ATTLIST pool
+              type    NMTOKEN  #REQUIRED >
+
+<!--
+**********************************************************************
+ELEMENT: postcondition
+COMMENT: Scenario postcondition of a path control variable.
+**********************************************************************
+-->
+
+<!ELEMENT postcondition EMPTY >
+<!ATTLIST postcondition
+                  variable-id  IDREF     #REQUIRED
+		  value        (T|F)     #REQUIRED >
+
+<!--
+**********************************************************************
+ELEMENT: postcondition-list
+COMMENT: A list of conditions, composed with ANDs by default. 
+ Other multiple composition operators could be used. 
+**********************************************************************
+-->
+
+<!ELEMENT postcondition-list (condition)*>
+<!ATTLIST postcondition-list  
+                composition CDATA   "AND" >
+
+<!--
+**********************************************************************
+ELEMENT: precondition-list
+COMMENT: A list of conditions, composed with ANDs by default. 
+ Other multiple composition operators could be used. 
+**********************************************************************
+-->
+
+<!ELEMENT precondition-list (condition)*>
+<!ATTLIST precondition-list  
+                composition CDATA   "AND" >
+
+<!--
+**********************************************************************
+ELEMENT: raise
+COMMENT: Indicates that an exception will be handled by another path. 
+ATTRIBUTE exception-id: a reference to an existing exception handled 
+ by another path. 
+**********************************************************************
+-->
+
+<!ELEMENT raise EMPTY>
+<!ATTLIST raise  
+                exception-id    IDREF   #IMPLIED >
+
+<!--
+**********************************************************************
+ELEMENT: regular
+COMMENT: Components, in Buhr's notation, may be teams, 
+ processes, ISRs, objects, agents, or others (when another 
+ notation is used). ATTRIBUTE type: usually team, process, 
+ object, ISR, or agent. Could be an ad hoc name as well, if 
+ another structure notation is targetted.
+ATTRIBUTE 
+ replication-factor: number of instances, only when replicated=yes
+ATTRIBUTE device-id: reference to the processor 
+ on which this component (usually a process) executes.
+ATTRIBUTE 
+ processor-name: reference to the name of the processor on which 
+ this component (usually a process) executes. This is a temporary 
+ attribute only. 
+**********************************************************************
+-->
+
+<!ELEMENT regular EMPTY>
+<!ATTLIST regular 
+                type                NMTOKEN     "team"
+                protected           (yes | no)  "no"
+                slot                (yes | no)  "no"
+                replicated          (yes | no)  "no"
+                replication-factor  NMTOKEN     "1"
+                device-id           IDREF       #IMPLIED
+                processor-id        IDREF       #IMPLIED >
+
+<!--
+**********************************************************************
+ELEMENT: response-time-requirements
+COMMENT: The response-time-requirements contains a list of 
+ response-time-req (relations between timestamp-points) 
+**********************************************************************
+-->
+
+<!ELEMENT response-time-requirements (response-time-req)*>
+
+<!--
+**********************************************************************
+ELEMENT: response-time-req
+COMMENT: A response-time-req contains two references to 
+ timestamp points (starting and ending timestamp points), a name, 
+ a value for the response-time (in ms), and the probability 
+ (percentage) that the actual response time respects 
+ response-time. 
+**********************************************************************
+-->
+
+<!ELEMENT response-time-req EMPTY>
+<!ATTLIST response-time-req
+                timestamp1      IDREF   #REQUIRED  
+                timestamp2      IDREF   #REQUIRED  
+                resptime-name   CDATA   #IMPLIED
+                response-time   NMTOKEN #REQUIRED
+                percentage      NMTOKEN #REQUIRED
+                description     CDATA   #IMPLIED >
+
+<!--
+**********************************************************************
+ELEMENT: responsibility
+COMMENT: A responsibility has a name and a unique identifier, 
+ which can be referred in the structure (responsibility-name) or 
+ in the path specification (responsibility-ref). It can also 
+ include an action: dynamic-resp, raise, or handle.
+ATTRIBUTE 
+ direction: visual location of the resp-name on the 
+ path.
+ATTRIBUTE exec-sequence: execution sequence associated to 
+ the responsibility. Used for performance. 
+**********************************************************************
+-->
+
+<!ELEMENT responsibility (data-store-spec?, service-request-spec?,
+                          variable-operation-list?,
+                         (precondition-list?, postcondition-list?)?,
+                         (dynamic-resp | raise | handle)?)?>
+<!ATTLIST responsibility  
+                resp-id         ID      #REQUIRED
+                resp-name       CDATA   #IMPLIED
+                exec-sequence   CDATA   #IMPLIED
+                description     CDATA   #IMPLIED >
+
+<!--
+**********************************************************************
+ELEMENT: responsibility-list
+COMMENT: These references hyperedges that reference point to the 
+ responsibilities enumerated in responsibility-specification. 
+**********************************************************************
+-->
+
+<!ELEMENT responsibility-list (hyperedge-ref)*>
+
+<!--
+**********************************************************************
+ELEMENT: responsibility-ref
+COMMENT: A responsibility reference is not a specification. Its 
+ resp-id refers to a responsibility specified in 
+ responsibility-specification. When referenced from a path, the hyperedge 
+ has only one source hyperedge and one target hyperedge. 
+**********************************************************************
+-->
+
+<!ELEMENT responsibility-ref EMPTY>
+<!ATTLIST responsibility-ref  
+                resp-id        IDREF     #REQUIRED
+                direction      NMTOKEN   #REQUIRED
+                arrow-position NMTOKEN   #IMPLIED >
+
+<!--
+**********************************************************************
+ELEMENT: responsibility-specification
+COMMENT: Description of the responsibilities 
+**********************************************************************
+-->
+
+<!ELEMENT responsibility-specification (responsibility)*>
+
+<!--
+**********************************************************************
+ELEMENT: resulting-event-list
+COMMENT: A list of events, composed with ANDs by default. Other 
+ multiple composition operators could be used. 
+**********************************************************************
+-->
+
+<!ELEMENT resulting-event-list (event)*  >
+<!ATTLIST resulting-event-list  
+                composition CDATA   "AND" >
+
+<!--
+**********************************************************************
+ELEMENT: root-maps
+COMMENT: Root-maps are models. Many root-maps are possible in a forest. 
+**********************************************************************
+-->
+
+<!ELEMENT root-maps (model)+>
+
+<!--
+**********************************************************************
+ELEMENT: scenario-definition
+COMMENT: Defines all of the path control variable settings necessary to
+control an end-to-end scenario as well as the start points of the
+scenario.
+**********************************************************************
+-->
+
+<!ELEMENT scenario-definition (scenario-start)*
+          (variable-init)* (postcondition)* >
+<!ATTLIST scenario-definition
+                  name         NMTOKEN   #REQUIRED
+		  description  CDATA     #IMPLIED >
+
+<!--
+**********************************************************************
+ELEMENT: scenario-group
+COMMENT: Group of related scenario definitions. 
+**********************************************************************
+-->
+
+<!ELEMENT scenario-group (scenario-definition)* >
+<!ATTLIST scenario-group
+                  name         NMTOKEN   #REQUIRED
+		  description  CDATA     #IMPLIED >
+
+<!--
+**********************************************************************
+ELEMENT: scenario-list
+COMMENT: List of all scenario definitions organized into groups. 
+**********************************************************************
+-->
+
+<!ELEMENT scenario-list (scenario-group)* >
+
+<!--
+**********************************************************************
+ELEMENT: scenario-start
+COMMENT: One of possibly multiple path start points for a scenario.
+**********************************************************************
+-->
+
+<!ELEMENT scenario-start EMPTY >
+<!ATTLIST scenario-start
+                  map-id       IDREF     #REQUIRED
+		  start-id     IDREF     #REQUIRED >
+
+<!--
+**********************************************************************
+ELEMENT: service-request-spec
+COMMENT: List pairs (service-type, request-number).
+**********************************************************************
+-->
+
+<!ELEMENT service-request-spec (service-request)*>
+
+<!--
+**********************************************************************
+ELEMENT: service-request
+COMMENT: Describe a service access by type and request quantity
+         service-type is a reference to a device element
+**********************************************************************
+-->
+
+<!ELEMENT service-request EMPTY>
+<!ATTLIST service-request
+                service-type        IDREF      #REQUIRED
+                request-number      CDATA      #REQUIRED >
+
+<!--
+**********************************************************************
+ELEMENT: start
+COMMENT: A start of path should have only one target hyperedge. 
+ It may have a source when linked to a result by a 'connect'. The 
+ triggering-event-list gives the set of events that initiate the 
+ sequence of actions in a path. The precondition-list must be 
+ satisfied in order for the scenario to start
+ATTRIBUTE logical-condition: expression which is evaluated at run time
+ATTRIBUTE population-size: finite population for closed streams
+ATTRIBUTE mean: parameter for exponential and Erlang arrival distributions.
+ATTRIBUTE value: parameter for deterministic arrival distribution.
+ATTRIBUTE low, high: parameters for uniform arrival distribution.
+ATTRIBUTE kernel: parameter for Erlang arrival distribution.
+ATTRIBUTE expert-distribution: parameter for expert arrival distribution. 
+**********************************************************************
+-->
+
+<!ELEMENT start (triggering-event-list?, precondition-list?)?>
+<!ATTLIST start  
+                arrival     (exponential | deterministic 
+                             | uniform | erlang  
+                             | expert | none)          "none"
+		stream-type  (open | closed)	       "open"
+		logical-condition   CDATA              #IMPLIED
+		population-size     NMTOKEN	       #IMPLIED
+                mean                NMTOKEN            #IMPLIED
+                value               NMTOKEN            #IMPLIED
+                low                 NMTOKEN            #IMPLIED
+                high                NMTOKEN            #IMPLIED
+                kernel              NMTOKEN            #IMPLIED
+                expert-distribution CDATA              #IMPLIED
+                label-alignment     (centered | flush) #IMPLIED >
+
+<!--
+**********************************************************************
+ELEMENT: structure-spec
+COMMENT: The structure specification gives the relationship 
+ between the structural entities and the location at which 
+ responsibilities are executed. The structural entities of a UCM 
+ model (the components) can be divided in two different 
+ categories: regular and pool.
+**********************************************************************
+-->
+
+<!ELEMENT structure-spec (component-ref)* >
+
+<!--
+**********************************************************************
+ELEMENT: stub
+COMMENT: A stub can have several entry points and exit points 
+ (connected respectively to source and target hyperedges). One 
+ plugin can be attached to a static (or fixed) stub. Dynamic 
+ stubs allow for multiple plugins, and the choice is made at 
+ run-time based on the satisfaction of the plugins' 
+ preconditions. The paths that go through the stub need to be 
+ bound to the paths of the plugins in order to express 
+ continuity. This is done through explicit binding. Bindings can 
+ be enforced to ensure particular path continuity, even in the 
+ presence of a plugin. The binding is declared in the definition 
+ of the stub (through the plugin) rather then at the level of the 
+ sub-map since the latter only makes sense in the context of the stub. 
+**********************************************************************
+-->
+
+<!ELEMENT stub (stub-entry-list, stub-exit-list, precondition-list?,
+                postcondition-list?, service-request-spec?)>
+<!ATTLIST stub  
+                type              (static | dynamic)  "static"
+                shared            (yes | no)          "no"
+		selection-policy  CDATA               #IMPLIED>
+
+<!--
+**********************************************************************
+ELEMENT: stub-entry
+COMMENT: Identifier for a stub entry point connected to a source hyperedge. 
+**********************************************************************
+-->
+
+<!ELEMENT stub-entry EMPTY>
+<!ATTLIST stub-entry  
+                stub-entry-id   ID      #REQUIRED
+                hyperedge-id    IDREF   #REQUIRED >
+
+<!--
+**********************************************************************
+ELEMENT: stub-entry-list
+COMMENT: Identifiers for stub entry points connected to source hyperedges. 
+**********************************************************************
+-->
+
+<!ELEMENT stub-entry-list (stub-entry)+>
+
+<!--
+**********************************************************************
+ELEMENT: stub-exit
+COMMENT: Identifier for a stub exit point connected to a target hyperedge. 
+**********************************************************************
+-->
+
+<!ELEMENT stub-exit EMPTY>
+<!ATTLIST stub-exit  
+                stub-exit-id    ID      #REQUIRED
+                hyperedge-id    IDREF   #REQUIRED >
+
+<!--
+**********************************************************************
+ELEMENT: stub-exit-list
+COMMENT: Identifiers for stub exit points connected to target hyperedges. 
+**********************************************************************
+-->
+
+<!ELEMENT stub-exit-list (stub-exit)+>
+
+<!--
+**********************************************************************
+ELEMENT: synchronization
+COMMENT: A synchronization (sometimes called AND-join or 
+ AND-fork) has several source and target hyperedges. A cardinality
+ (1:N, N:1, 2:3...) can be associated to a synchronization. 
+**********************************************************************
+-->
+
+<!ELEMENT synchronization EMPTY>
+<!ATTLIST synchronization
+                cardinality-source  NMTOKEN #IMPLIED
+                cardinality-target  NMTOKEN #IMPLIED
+                orientation         NMTOKEN #IMPLIED >
+
+<!--
+**********************************************************************
+ELEMENT: timestamp-point
+COMMENT: A timestamp is a name on a path used to measure 
+ response time requirements. 
+**********************************************************************
+-->
+
+<!ELEMENT timestamp-point EMPTY>
+<!ATTLIST timestamp-point  
+                orientation NMTOKEN            #IMPLIED 	
+		reference   (previous | next)  #REQUIRED >
+
+<!--
+**********************************************************************
+ELEMENT: triggering-event-list
+COMMENT: A list of events, composed with ORs by default. Other 
+ multiple composition operators could be used. 
+**********************************************************************
+-->
+
+<!ELEMENT triggering-event-list (event)*>
+<!ATTLIST triggering-event-list  
+                composition CDATA   "OR" >
+
+<!-- 
+**********************************************************************
+ELEMENT: ucm-sets
+COMMENT: A ucm-set is a set of maps which are part of the ucm-design.
+The creation of a set allows the maps which describe a feature or
+aspect of a system to be listed.
+**********************************************************************
+-->
+
+<!ELEMENT ucm-sets (ucm-set)*>
+
+<!-- 
+**********************************************************************
+ELEMENT: ucm-sets
+COMMENT: A UCM set would have a name and a description. Its elements
+would be references to models (maps).
+**********************************************************************
+-->
+
+<!ELEMENT ucm-set (ucm-set-elem)*>
+<!ATTLIST ucm-set
+                name              NMTOKEN #REQUIRED
+                primary-map-id    IDREF   #IMPLIED
+                description       CDATA   #IMPLIED >
+
+<!-- 
+**********************************************************************
+ELEMENT: ucm-set-elem
+COMMENT: The map-id is a model identifier (root map or plug-in map).
+A comment could be added to tell, for instance, which path needs to be
+followed in a plug-in.
+**********************************************************************
+-->
+
+<!ELEMENT ucm-set-elem EMPTY >
+<!ATTLIST ucm-set-elem 
+                map-id        IDREF   #REQUIRED
+                comment       CDATA   #IMPLIED >
+
+<!--
+**********************************************************************
+ELEMENT: variable-init
+COMMENT: Initializes a path control variable.
+**********************************************************************
+-->
+
+<!ELEMENT variable-init EMPTY >
+<!ATTLIST variable-init
+                  variable-id  IDREF     #REQUIRED
+		  value        (T|F)     #REQUIRED >
+
+<!--
+**********************************************************************
+ELEMENT: variable-operation-list
+COMMENT: Lists operations on path control variables at a path point.
+**********************************************************************
+-->
+
+<!ELEMENT variable-operation-list (variable-operation)*>
+
+<!--
+**********************************************************************
+ELEMENT: variable-operation
+COMMENT: Sets a path control variable along a path to either a fixed
+         value or to the evaluation of a logical expression.
+**********************************************************************
+-->
+
+<!ELEMENT variable-operation EMPTY >
+<!ATTLIST variable-operation
+                  variable-id  IDREF             #REQUIRED
+                  value        CDATA             #REQUIRED >
+
+<!--
+**********************************************************************
+ELEMENT: waiting-place
+COMMENT: A waiting place has one source hyperedge and one target 
+ hyperedge, or two target hyperedges when there is a timeout 
+ path. This is not a strict constraint as other hyperedges (e.g., 
+ connect) might be linked to it. The triggering-event-list gives 
+ the set of events that restart the sequence of actions in a 
+ path. The precondition-list must be satisfied in order for the 
+ sequence to restart.
+ATTRIBUTE timer: a waiting place can be a timer, or not (default).
+ATTRIBUTE wait-type: user given type
+ATTRIBUTE logical-condition: expression which is evaluated at run time
+ATTRIBUTE timeout-variable: reference to a timer's timeout variable
+**********************************************************************
+-->
+
+<!ELEMENT waiting-place (triggering-event-list?, precondition-list?)?>
+<!ATTLIST waiting-place  
+                timer             (yes|no)  "no"
+		wait-type         CDATA     #IMPLIED
+		logical-condition CDATA     #IMPLIED
+		timeout-variable  IDREF     #IMPLIED >

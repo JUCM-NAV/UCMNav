@@ -1,0 +1,92 @@
+/_Z { /defaults save def } def
+/ZZ { defaults restore } def
+/PW { /pw exch def } def 612 PW
+/PH { /ph exch def } def 792 PH
+/FM { /fm exch def } def 72 FM
+/IM { /im exch def } def 36 IM
+/RM { /rm exch def } def 540 RM
+/PG { /pg exch def } def 1 PG
+/LM { /lm exch def } def 72 LM
+/TM { /tm exch def } def 720 TM
+/BM { /bm exch def } def 82 BM
+/TI { /ti exch def } def 36 TI
+/IN { ti mul /in exch def } def 0 IN
+/CF { /cf exch def } def
+[/PageMode /UseOutlines /DOCVIEW pdfmark
+/textbox {
+ 720 TM 540 RM 82 BM 72 LM 0 IN lm tm moveto 1 setlinecap
+ } def
+/cleanup        { clear cleardictstack } def
+/close  { showpage grestore cleanup ZZ } def
+/1upUS  {
+                _Z  612 PW 792 PH tinydict begin
+		/numbering {headers footers} def
+                /p1     { gsave midpage /jump
+                { bm tm gt { currentfont CF grestore showpage p1 cf setfont } if } def
+                } def
+		p1 
+} def
+/URX    { /urx exch def } def
+/URY    { /ury exch def } def
+/SS     { { dup mul exch dup mul add 1 exch sub } setscreen } def
+/middle { rm lm add urx sub 2 div LM } def
+/down   { tm ury sub bm gt { tm ury sub TM } { showpage p1 tm ury sub TM } ifelse  } def
+/place  {
+ URY URX middle down _Z lm tm translate 106 45 SS end
+} bind def
+/text   { clear tinydict begin ZZ 72 LM lm tm moveto L  } bind def
+end
+%%Begin Dictionary:
+userdict /tinydict 100 dict dup begin put
+/midpage        { textbox numbering } def
+/headers {
+gs 11 bol title s gr
+                L 2 b 0.2 rule H
+} bind def
+/footers {
+gs lm bm 10 sub moveto 0.2 textwidth 0 rlineto set 
+11 rom lm bm 22 sub moveto date s
+11 bol number dsp rm exch sub bm 22 sub moveto s gr
+} bind def
+/number { pg pg 1 add PG 4 string cvs } def
+/ld     { load def } def        /cmyk /setcmykcolor load def
+/gs /gsave ld           /gr /grestore ld   /rgb /setrgbcolor load def
+/w /widthshow load def  /set { gs setlinewidth stroke gr } bind def
+/a  { tm exch sub TM lm tm moveto } bind def
+/b  { tm add TM lm tm moveto } bind def
+/H  { lg 2 div a } bind def
+/B  { lg 2 div b } bind def
+/L  { tm lg sub TM lm tm moveto } bind def
+/R { tm lg add TM lm tm moveto } bind def
+/centre {
+ dsp 2 div textwidth 2 div exch sub lm add tm moveto
+} bind def
+/right  { dsp rm exch sub tm moveto } bind def
+/newpage        { 10 neg TM jump } def
+/ID { lm in add LM lm tm moveto } def
+/OD { lm in sub LM lm tm moveto } def
+/rule   { B gs lm tm moveto textwidth 0 rlineto set gr L } bind def
+/space ( ) def
+/dsp    { dup stringwidth pop } def
+/cpp    { currentpoint pop } def
+/textwidth      { rm lm sub } def
+/ssp    { space search pop } def
+/find   { search { pop 3 -1 roll 1 add 3 1 roll } { pop exit } ifelse } def
+/spacecount     { 0 exch ( ) { find } loop } def
+/toofar?        { ssp dsp cpp add rm gt } def
+/s /show load def
+/S      {
+                jump dup spacecount { toofar? { L jump s s } { s s } ifelse }
+                repeat pop
+} bind def
+/P      { S L jump } def
+/PS     { tm bm sub gt { currentfont CF grestore showpage p1 cf setfont R } if } bind def
+/T      { lm add tm moveto } def
+/rom    { /Times-Roman exch selectfont} def
+/bol { /Times-Bold exch selectfont } def
+%%EndResource
+end
+%%EndResource
+%%BeginScript
+1upUS
+
