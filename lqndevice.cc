@@ -40,7 +40,8 @@ LqnDevice::LqnDevice( const char* name, int id, double speed_factor )
 // destructor
 LqnDevice::~LqnDevice()
 {
-  printf( "Device '%s' deleted.\n", my_name, my_id );
+	// Jul2005 gM: removed ", my_id" from argument list to get rid of GCC warning
+  printf( "Device '%s' deleted.\n", my_name );
 }
 
 

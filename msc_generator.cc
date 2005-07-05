@@ -95,13 +95,13 @@ bool MSCGenerator::UpdateElapsedTime()
       }
 
       if( elapsed_time < 60 )
-	 sprintf( elapsed, "%d s", elapsed_time );
+     sprintf( elapsed, "%ld s", elapsed_time ); // Jul2005 gM: replaced "%d" with "%ld" to get rid of GCC warning
       else if( elapsed_time < 3600 )
-	 sprintf( elapsed, "%d m %d s", elapsed_time/60, elapsed_time%60 );
+	 sprintf( elapsed, "%ld m %ld s", elapsed_time/60, elapsed_time%60 ); // Jul2005 gM: replaced "%d" with "%ld" to get rid of GCC warning
       else {
 	 hours = elapsed_time/3600;
 	 elapsed_time -= hours*3600;
-	 sprintf( elapsed, "%d h %d m %d s", hours, elapsed_time/60, elapsed_time%60 ); 
+	 sprintf( elapsed, "%ld h %ld m %ld s", hours, elapsed_time/60, elapsed_time%60 ); // Jul2005 gM: replaced "%d" with "%ld" to get rid of GCC warning
       }
       fl_set_object_label( pfdmgs->Time, elapsed );
       previous_elapsed = elapsed_time;

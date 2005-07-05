@@ -408,7 +408,8 @@ bool LqnActivity::FilePrintConnections( FILE* outfile )
 
   switch( my_connection ) {
   case NOCONNECTION:
-    printf( "WARNING LqnActivity::FilePrintConnections: activity 's' has no connections.\n", my_name );
+    // Jul2005 gM: replaced 's' with '%s' to get rid of GCC warning
+	printf( "WARNING LqnActivity::FilePrintConnections: activity '%s' has no connections.\n", my_name );
     break;
 
   case NORMAL:

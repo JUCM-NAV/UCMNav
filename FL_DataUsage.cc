@@ -87,7 +87,8 @@ void UpdateDataReferences()
 
    for( references->First(); !references->IsDone(); references->Next() ) {
       dr = references->CurrentItem();
-      sprintf( buffer, "@f@s@b%*-s%s", 25, dsd->Item( DATA_STORES, dr->Data() ), dsd->Item( ACCESS_MODES, dr->Access() ));
+      // Jul2005 gM: replaced "*-" with "-*" to get rid of GCC warning
+	  sprintf( buffer, "@f@s@b%-*s%s", 25, dsd->Item( DATA_STORES, dr->Data() ), dsd->Item( ACCESS_MODES, dr->Access() ));
       fl_addto_browser( pfddsu->DUBrowser, buffer );
    }
 

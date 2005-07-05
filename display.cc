@@ -2463,7 +2463,8 @@ void DisplayManager::ImportPerformanceData()
 	       return;
 	    }
 	    fgets( buffer, 200, fp );
-	    sscanf( buffer, "loop count\t%s", &loop_count );
+		// Jul2005 gM: replaced "&loop_count" with "loop_count" to get rid of GCC warning
+	    sscanf( buffer, "loop count\t%s", loop_count );
 	    current_loop->LoopCount( loop_count );
 	 } else if( strncmp( buffer, "Responsibility\t\"", 16 ) == 0 ) {
 	    buffer[strlen(buffer)-2] = 0; // remove trailing "
@@ -2497,12 +2498,14 @@ void DisplayManager::LoadStartPFData( Start *start, FILE *fp )
       start->ExpertInput( buffer+7 );
       return;
    }
-   sscanf( buffer, "%s\t%f", &type, &input );
+   // Jul2005 gM: replaced "&type" with "type" to get rid of GCC warning
+   sscanf( buffer, "%s\t%f", type, &input );
    start->Input( input, 1 );
    
    if( (arrival == UNIFORM) || (arrival == ERLANG) ) {
       fgets( buffer, 50, fp );
-      sscanf( buffer, "%s\t%f", &type, &input );
+      // Jul2005 gM: replaced "&type" with "type" to get rid of GCC warning
+	  sscanf( buffer, "%s\t%f", type, &input );
       start->Input( input, 2 );
    }
 }
@@ -2544,7 +2547,8 @@ void DisplayManager::LoadRespRefPFData( ResponsibilityReference *resp, FILE *fp 
    for( service_requests->First(); !service_requests->IsDone(); service_requests->Next() ) {
       fgets( buffer, 50, fp );
       fgets( buffer, 50, fp );
-      sscanf( buffer, "%s\n", &amount );
+      // Jul2005 gM: replaced "&amount" with "amount" to get rid of GCC warning
+	  sscanf( buffer, "%s\n", amount );
       service_requests->CurrentItem()->Amount( amount );
    }
 }

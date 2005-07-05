@@ -403,8 +403,9 @@ LqnActivity* LqnTask::AddResponsibilityActivity( ResponsibilityReference* resp_r
       // if an activity already exists for this responsibility
       if( my_activities->CurrentItem()->GetEdge() == resp_ref ) {
 	resp_activity = my_activities->CurrentItem();
+	// Jul2005 gM: removed ", edge_id" from argument list to get rid of GCC warning
 	printf( "(LqnTask::AddResponsibilityActivity: activity '%s' already exists in task '%s'.)\n",\
-		resp_activity->GetName(), edge_id, my_name );
+		resp_activity->GetName(), my_name );
       }
     }
   }

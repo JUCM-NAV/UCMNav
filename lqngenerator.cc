@@ -116,8 +116,8 @@ void LqnGenerator::Transmorgrify( Cltn<Map*>* maps, Cltn<Device*>* devices )
   log_file_name[ strlen( log_file_name ) - 1 ] = 'g';
   log_file = fopen( log_file_name, "w" );  // output comments to log file
 
-  printf( "==================== Begin Transmorgrify ===================\n\n",\
-	  maps->Size() );
+  // Jul2005 gM: removed ",\ maps-Size()" from argument list to get rid of GCC warning
+  printf( "==================== Begin Transmorgrify ===================\n\n");
   Init();  // initialize transmorgrify
   // verify that all the devices are properly specified
   CreateDevices( devices );
@@ -205,8 +205,8 @@ void LqnGenerator::Transmorgrify( Cltn<Map*>* maps, Cltn<Device*>* devices )
   fclose( log_file );
   fl_show_message( "", "Log comments saved in file", log_file_name );
 
-  printf( "\n==================== End Transmorgrify ===================\n\n",\
-	  maps->Size() );
+  // Jul2005 gM: removed ",\ maps->Size()" from argument list to get rid of GCC warning
+  printf( "\n==================== End Transmorgrify ===================\n\n");
   Clear();
 }
 

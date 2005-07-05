@@ -1609,8 +1609,9 @@ Hyperedge * Stub::ScanScenarios( scan_type type )
 	       if( sole_plugin == NULL )
 		  sole_plugin = submaps.CurrentItem();
 	       else { // two submaps evaluated to true
+			   // Jul2005 gM: removed ", submap_count" from argument list to get rid of GCC warning
 		  sprintf( buffer, "The dynamic stub \"%s\" in Map \"%s\"\n has multiple submaps whose logical selection conditions evaluated to true.",
-			   stub_label, parent_map->MapLabel(), submap_count );
+			   stub_label, parent_map->MapLabel() );
 		  ErrorMessage( buffer, TRUE );
 		  msc->AbortGeneration();
 		  return( NULL );
@@ -1694,8 +1695,9 @@ Hyperedge * Stub::HighlightScenario( )
             if( sole_plugin == NULL )
                sole_plugin = submaps.CurrentItem();
 	    else { // two submaps evaluated to true
+			// Jul2005 gM: removed ", submap_count" from argument list to get rid of GCC warning
 	       sprintf( buffer, "The dynamic stub \"%s\" in Map \"%s\"\n has multiple submaps whose logical selection conditions evaluated to true.",
-			   stub_label, parent_map->MapLabel(), submap_count );
+			   stub_label, parent_map->MapLabel() );
 	       ErrorMessage( buffer, TRUE );
 	       msc->AbortGeneration();
 	       return( NULL );
@@ -1987,8 +1989,9 @@ Hyperedge * Stub::TraverseScenario( )
 	     if( sole_plugin == NULL )
                 sole_plugin = submaps.CurrentItem();
 	     else { // two submaps evaluated to true
+			 // Jul2005 gM: removed ", submap_count" from argument list to get rid of GCC warning
 	 	sprintf( buffer, "The dynamic stub \"%s\" in Map \"%s\"\n has multiple submaps whose logical selection conditions evaluated to true.",
-			   stub_label, parent_map->MapLabel(), submap_count );
+			   stub_label, parent_map->MapLabel() );
 		ErrorMessage( buffer, TRUE );
 		sce->AbortGeneration();
 		return( NULL );

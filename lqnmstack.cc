@@ -147,7 +147,8 @@ LqnMessage* LqnMstack::GetLastMessage()
   if( my_messages->Size() ) {  // there are messages on the stack
     message = my_messages->GetLast();  // get the last message
     if( printlevel >= 2 ) {
-      printf( "\tMstack%d GetLastMessage: " );
+		// Jul2005 gM: added ", my_id" to argument list to get rid of GCC warning
+      printf( "\tMstack%d GetLastMessage: ", my_id );
       message->Print();
       printf( ".\n" );
     }
