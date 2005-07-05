@@ -21,8 +21,9 @@
   * Scenario Definitions
   * Scenario Highlight
   * MSC Generation
-  * NEW: XML Scenario Generation
+  * XML Scenario Generation
   * NEW: DOORS DXL Export
+  * NEW: CSM Export
   
 @b@C10@lKeyboard Shortcuts
 
@@ -442,12 +443,18 @@ test cases, etc.
 @b@C10@lDOORS DXL Export
 
 Several UCM elements can be exported to the DOORS requirements
-management system. UCMNav can generate DXL scripts which can
-run on DOORS and update the DOORS database. These UCM elements
-can be linked to other tyoes for requirements, enabling
+management system. UCMNav can generate DXL scripts which can be
+run in DOORS and update the DOORS database. These UCM
+elements can be linked to other types of requirements, enabling
 traceability between scenarios and external requirements. 
 A DXL library is required to run the script (available upon
 request to damyot@site.uottawa.ca)
+
+@b@C10@lCSM Export
+
+UCM models can be exported to CSM (Core Scenario Model), an
+intermediate format used by various tools for performance analysis
+(e.g. layered queueing networks, timed Petri nets, and simulation).
 
 @b@C10@lFor Additional Information...
 

@@ -272,12 +272,11 @@ void Hypergraph::SaveCSMXML( FILE *fp )
       edge_pool->Add( loop_inputs[i] );    // add at end of list
    }
    
-
-   // record where resource acquirement elements should be added
    for ( edge_pool->First(); !edge_pool->IsDone(); edge_pool->Next() ) {
-      if( edge_pool->CurrentItem()->EdgeType() != STUB )
+      if( edge_pool->CurrentItem()->EdgeType() == START || edge_pool->CurrentItem()->EdgeType() == RESULT ||edge_pool->CurrentItem()->EdgeType() == RESPONSIBILITY_REF||edge_pool->CurrentItem()->EdgeType() == EMPTY 
+	  || edge_pool->CurrentItem()->EdgeType() == SYNCHRONIZATION ||edge_pool->CurrentItem()->EdgeType() == OR_FORK||edge_pool->CurrentItem()->EdgeType() == OR_JOIN)
          hyperedge_pool[number_resp ++] = edge_pool->CurrentItem();
-   }
+    }
 
    // add resource acquire and release elements when necessary
    for( j=0; j< number_resp; j++)

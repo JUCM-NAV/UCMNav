@@ -741,7 +741,7 @@ void AboutMenu_cb(FL_OBJECT *pflo, long data )
 
    case 2: // 'About UCMNav' item
       
-      fl_show_message( " UCM Navigator ", "Authors: A. Miga, D. Petriu, D. Amyot\nContributors: J. Carriere, S. Cui, X.Y. He, K. Kaempf, B. Jiang,\nK. Lam, G.Mussbacher, C. Witham, X.Y. Zeng, and J. Zhao", "Version 2.3, July 15, 2005" );
+      fl_show_message( " UCM Navigator ", "Authors: A. Miga, D. Petriu, D. Amyot\nContributors: J. Carriere, S. Cui, X.Y. He, K. Kaempf, B. Jiang,\nK. Lam, G. Mussbacher, C. Witham, X.Y. Zeng, and J. Zhao", "Version 2.3, July 15, 2005" );
       break;
    }
 }
