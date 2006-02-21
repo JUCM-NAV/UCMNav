@@ -62,14 +62,17 @@ void BSpline::Interpolate()
       figures->CurrentItem()->GetPosition( fX, fY );
       rgrgflData[i+1][0] = fX;
       rgrgflData[i+1][1] = fY;
+      rgrgflData[i+1][2] = 0; // 3rd dimension initialized to 0
       i++;
    }
 
    rgrgflData[0][0] = rgrgflData[1][0];
    rgrgflData[0][1] = rgrgflData[1][1];
+   rgrgflData[0][2] = rgrgflData[1][2];
   
    rgrgflData[iNum+1][0] = rgrgflData[iNum][0];
    rgrgflData[iNum+1][1] = rgrgflData[iNum][1];
+   rgrgflData[iNum+1][2] = rgrgflData[iNum][2];
    iNum+=2;
 
    if( iNum > array_size ) {
