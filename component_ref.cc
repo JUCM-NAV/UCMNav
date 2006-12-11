@@ -1039,7 +1039,7 @@ void ComponentReference::SaveCSMXML( FILE *fp, bool ignore_children )
 	 return;
    }
 
-   sprintf( buffer, "<component id=\"c%d\" ",component_ref_number);
+   sprintf( buffer, "<Component id=\"c%d\" ",component_ref_number);
    PrintXMLText( fp, buffer );
    
    if( component )
@@ -1109,7 +1109,7 @@ void ComponentReference::SaveCSMXML( FILE *fp, bool ignore_children )
       PrintEndXMLBlock( fp, "other-hyperedge-list" );
    }
   */ 
-   PrintEndXMLBlock( fp, "component" );
+   PrintEndXMLBlock( fp, "Component" );
    LinebreakXML( fp );   
 
    for( children.First(); !children.IsDone(); children.Next() )

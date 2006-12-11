@@ -172,38 +172,13 @@ void Component::SaveCSMXML( FILE *fp )
 {
     char buffer[1000];
     
-   sprintf( buffer, "<component id=\"c%d\" name=\"%s\"", component_number, PrintDescription( component_label ));
+   sprintf( buffer, "<Component id=\"c%d\" name=\"%s\"", component_number, PrintDescription( component_label ));
    PrintXMLText( fp, buffer );   
    //if( PrintManager::TextNonempty( component_description ) )
      // fprintf( fp, " description=\"%s\"", PrintDescription( component_description ) );
    if( processor_id != NA )
 	 fprintf( fp, " host=\"dv%d\"", processor_id );
-   fprintf( fp, ">\n" );
-   IndentNewXMLBlock( fp );
-   /*
-   //to check component's parent
-   if(comp_ref){
-	   fprintf ( fp,"parent=\"c%d"",comp_ref->GetParent()->GetComponentNumber());
-   }
-   fprintf( fp, ">\n" );
-   IndentNewXMLBlock( fp );
-   */
-/*
-   if( component_type != POOL ) {
-      //sprintf( buffer, "<regular type=\"%s\" protected=\"%s\" replicated=\"%s\" replication-factor=\"%s\" slot=\"%s\"",
-	    //   ComponentStringType( component_type ), ((is_protected == 1) ? "yes" : "no"), ((stack == 1) ? "yes" : "no"), poolnum,
-	      // ((dynamic == 1) ? "yes" : "no") );
-      //PrintXMLText( fp, buffer );
-      if( processor_id != NA )
-	 fprintf( fp, " host=\"dv%d\"", processor_id );
-      fprintf( fp, " />\n" );
-   }
-  // else {    // save Pool information
-    //  sprintf( buffer, "pool type=\"%s\" /", ComponentStringType( pool_component_type ) );
-     // PrintXML( fp, buffer );      
-   //}
-  */
-   PrintEndXMLBlock( fp, "component" );
+   fprintf( fp, " />\n" );
    LinebreakXML( fp );   
 }
 

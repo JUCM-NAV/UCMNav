@@ -395,10 +395,11 @@ void Hyperedge::SaveCSMXML( FILE *fp )
    {
 		sprintf( buffer, "<Start id=\"h%d\" ", hyperedge_number );
 		PrintXMLText( fp, buffer );
-		if( this->HasName() )
-		    fprintf( fp, "name=\"%s\" ", PrintDescription( this->HyperedgeName() ) );
-		else
-            fprintf( fp, "name=\" \" ");
+        // Removed. Start has no name in CSM.
+		//		if( this->HasName() )
+		//		    fprintf( fp, "name=\"%s\" ", PrintDescription( this->HyperedgeName() ) );
+		//		else
+		//            fprintf( fp, "name=\" \" ");
 		//if( PrintManager::TextNonempty( unique_desc ) )
 		//fprintf( fp, "description=\"%s\" ", PrintDescription( unique_desc ) );
 		if( target->Size() > 0 ){
@@ -421,10 +422,11 @@ if ( EdgeType() == EMPTY)
 		
 		sprintf( buffer, "<Sequence id=\"h%d\" ", hyperedge_number );
 		PrintXMLText( fp, buffer );
-		if( this->HasName() )
-		    fprintf( fp, "name=\"%s\" ", PrintDescription( this->HyperedgeName() ) );
-        else
-            fprintf( fp, "name=\" \" ");
+        // Removed. Sequence has no name in CSM.
+		// if( this->HasName() )
+		//     fprintf( fp, "name=\"%s\" ", PrintDescription( this->HyperedgeName() ) );
+        // else
+        //     fprintf( fp, "name=\" \" ");
 		//if( PrintManager::TextNonempty( unique_desc ) )
 		//fprintf( fp, "description=\"%s\" ", PrintDescription( unique_desc ) );
 		SaveCSMXMLConnections(fp);
@@ -595,10 +597,11 @@ if ( EdgeType() == RESOURCERELEASE)
 	 {
 		sprintf( buffer, "<End id=\"h%d\" ", hyperedge_number );
 		PrintXMLText( fp, buffer );
-		if( this->HasName() )
-		    fprintf( fp, "name=\"%s\" ", PrintDescription( this->HyperedgeName() ) );
-        else
-            fprintf( fp, "name=\" \" ");
+        // Removed. End has no name in CSM.
+		// if( this->HasName() )
+		//     fprintf( fp, "name=\"%s\" ", PrintDescription( this->HyperedgeName() ) );
+        // else
+        //     fprintf( fp, "name=\" \" ");
 		//if( PrintManager::TextNonempty( unique_desc ) )
 		//fprintf( fp, "description=\"%s\" ", PrintDescription( unique_desc ) );
         if( source->Size() > 0 ){

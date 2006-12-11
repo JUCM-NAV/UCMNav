@@ -301,7 +301,6 @@ void XmlManager::SaveCSMXML( FILE *file, Cltn<Map *> *sublist, const char *subde
    map_pool = ((export_list != NULL) ? export_list : display_manager->Maps());
 
    PrintXML( file, "?xml version=\"1.0\" encoding=\"utf-8\"?" );
-   //PrintXML( file, "!DOCTYPE ucm-design SYSTEM \"ucm23xml.dtd\"" );  //  DTD version needs to be changed now and again
    LinebreakXML( file );
 
    if( subdesign_name == NULL ) {
@@ -315,8 +314,8 @@ void XmlManager::SaveCSMXML( FILE *file, Cltn<Map *> *sublist, const char *subde
    }
    else
       dn = subdesign_name;
-      
-   sprintf( buffer, "<CSM name=\"%s\"", PrintDescription( dn ) );
+
+   sprintf( buffer, "<CSM:CSMType xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:CSM=\"platform:/resource/edu.carleton.sce.puma/CSM.xsd\"  name=\"%s\"", PrintDescription( dn ) );
    PrintXMLText( file, buffer );
    fprintf( file, " description=\"%s\" >\n",
 	    ( display_manager->DesignDescription()  ? PrintDescription( display_manager->DesignDescription() ) : "" ));
@@ -414,7 +413,7 @@ void XmlManager::SaveCSMXML( FILE *file, Cltn<Map *> *sublist, const char *subde
    UcmSet::SaveUcmSets( file, export_list );
    
 */
-   PrintEndXMLBlock( file, "CSM" );
+   PrintEndXMLBlock( file, "CSM:CSMType" );
    fclose( file );
 
    if( export_list != NULL ) delete export_list; // free temporary map list

@@ -225,17 +225,17 @@ void ResponsibilityReference::SaveCSMXMLDetails( FILE *fp )
    fprintf( fp, buffer );
    }
 
-   // output host_demand for responsibilities
+   // output hostDemand for responsibilities
    DeviceDirectory *dd = DeviceDirectory::Instance();
    ServiceRequest *sr = NULL;
    Cltn<ServiceRequest *> *service_requests = responsibility->ServiceRequests();
    if( service_requests->Size() == 0 ) 
-        sprintf(buffer," host_demand=\"0\" ");                       // "0 service time",
+        sprintf(buffer," hostDemand=\"0\" ");                       // "0 service time",
    else {
      for( service_requests->First(); !service_requests->IsDone(); service_requests->Next() ){
         sr = service_requests->CurrentItem();
         if( ( sr->DeviceId() == PROCESSOR_DEVICE ) || ( dd->DeviceType( sr->DeviceId() ) == PROCESSOR ) )
-           sprintf(buffer,"host_demand=\"%s\" ", PrintDescription( sr->Amount() ) );                     // "service time"
+           sprintf(buffer,"hostDemand=\"%s\" ", PrintDescription( sr->Amount() ) );                     // "service time"
       }
     }
    fprintf( fp, buffer );
